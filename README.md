@@ -46,17 +46,13 @@ Xue Email Assistant 是一个现代化的邮箱管理系统，支持多账户管
 - SQLAlchemy (ORM)
 - OAuth2 认证
 - IMAP/SMTP 邮件协议支持
-- PostgreSQL/MySQL 数据库
-- Redis (缓存和会话管理)
-- Celery (任务队列)
+- SQLite 数据库
 
 ## 部署指南
 
 ### 环境要求
 - Node.js 16+
 - Python 3.8+
-- PostgreSQL 12+ 或 MySQL 8+
-- Redis 6+
 
 ### 后端部署
 
@@ -82,7 +78,7 @@ pip install -r requirements.txt
 4. 配置环境变量
 ```bash
 cp .env.example .env
-# 编辑.env文件，设置数据库连接、密钥等信息
+# 编辑.env文件，设置密钥等信息
 ```
 
 5. 初始化数据库
@@ -111,16 +107,15 @@ cd ../frontend
 npm install
 ```
 
-3. 配置环境
+3. 配置环境（如需要）
 ```bash
-cp .env.example .env.local
-# 编辑.env.local文件，设置API地址等配置
+# 前端配置通常在源代码中设置，无需额外环境文件
 ```
 
 4. 构建前端
 ```bash
 # 开发环境
-npm run dev
+npm run dev  # 默认在 http://localhost:5173 运行
 
 # 生产环境
 npm run build
@@ -146,7 +141,8 @@ docker-compose up -d
 
 2. 访问应用
 ```
-前端: http://localhost:8080
+前端开发环境: http://localhost:5173
+前端生产环境: http://localhost:8080 (使用serve部署时)
 后端API: http://localhost:8000/api/v1
 ```
 
@@ -157,7 +153,7 @@ docker-compose up -d
 1. 在Microsoft/Google等邮件服务商注册应用程序
 2. 获取Client ID和Client Secret
 3. 配置重定向URI为您的应用URL + `/auth/callback`
-4. 在应用的.env文件中配置这些凭据
+4. 在后端应用的.env文件中配置这些凭据
 
 ## 数据库迁移
 
@@ -176,9 +172,9 @@ python manage.py db upgrade
    - 查看后端日志中的详细错误信息
 
 2. 数据库连接问题
-   - 验证数据库凭据
-   - 检查数据库服务是否运行
-   - 确认网络连接是否正常
+   - 验证数据库配置
+   - 确认数据库文件权限正确
+   - 确认数据库文件路径存在
 
 3. 前端加载问题
    - 清除浏览器缓存
